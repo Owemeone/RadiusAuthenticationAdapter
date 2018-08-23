@@ -90,6 +90,18 @@ namespace RadiusAuthenticationAdapter
                     {
                         _Debug = false;
                     }
+
+                    // Debug Setting - Optional value.
+                    var regIdentityClaims = appConfig.GetValue("IdentityClaims");
+                    if (regIdentityClaims != null)
+                    {
+                        _IdentityClaims = regIdentityClaims.ToString();
+                    }
+                    else
+                    {
+                        Logging.LogMessage("Configuration data invalid - Missing IdentityClaims");
+                        throw new Exception("Configuration data not found.");
+                    }
                 }
                 else
                 {

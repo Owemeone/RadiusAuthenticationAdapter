@@ -42,6 +42,13 @@ namespace RadiusAuthenticationAdapter
             set { _SharedSecret = value; }
         }
 
+        internal string _IdentityClaims;
+        public string IdentityClaims
+        {
+            get { return _IdentityClaims; }
+            set { _IdentityClaims = value; }
+        }
+
         internal bool _Debug;
         public bool Debug
         {

@@ -33,7 +33,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>RadiusAuthenticationAdapter.key.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>RadiusAuthenticationAdapter.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.IdentityServer.Web">
@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="RadiusAuthenticationAdapter.key.snk" />
+    <None Include="RadiusAuthenticationAdapter.pfx" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

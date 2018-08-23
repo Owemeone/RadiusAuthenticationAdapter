@@ -8,9 +8,9 @@ namespace RadiusAuthenticationAdapter
     class AuthenticationAdapter : IAuthenticationAdapter
     {
         private RadiusClient radiusClient;
-        private string userPrincipalName;
+        private string identityClaim;
         private bool debugLogging = false;
-
+        private AppConfigurationReg appConfig;
 
         /// <summary>
         /// Called once AD FS decides that MFA is required for a user.
@@ -22,7 +22,7 @@ namespace RadiusAuthenticationAdapter
         public IAdapterPresentation BeginAuthentication(System.Security.Claims.Claim identityClaim, System.Net.HttpListenerRequest request, IAuthenticationContext context)
         {
             // This is needed so we can access the UPN in TryEndAuthentication().
-            this.userPrincipalName = identityClaim.Value;
+            this.identityClaim = identityClaim.Value;
 
             return new AdapterPresentation();
         }
@@ -47,7 +47,7 @@ namespace RadiusAuthenticationAdapter
         /// </summary>
         public IAuthenticationAdapterMetadata Metadata
         {
-            get { return new AuthenticationAdapterMetadata(); }
+            get { return new AuthenticationAdapterMetadata(appConfig.IdentityClaims); }
         }
 
 
@@ -58,7 +58,7 @@ namespace RadiusAuthenticationAdapter
         /// <param name="configData"></param>
         public void OnAuthenticationPipelineLoad(IAuthenticationMethodConfigData configData)
         {
-            var appConfig = new AppConfigurationReg();
+            appConfig = new AppConfigurationReg();
             radiusClient = new RadiusClient(appConfig.Server, appConfig.SharedSecret, appConfig.TimeOut,
                appConfig.AuthenticationPort, appConfig.AccountingPort);
 
@@ -97,7 +97,7 @@ namespace RadiusAuthenticationAdapter
         {
             Logging.LogMessage(
                 "An error occured authenticating a user." + Environment.NewLine + Environment.NewLine +
-                "Username: " + this.userPrincipalName + Environment.NewLine +
+                "Username: " + this.identityClaim + Environment.NewLine +
                 "Error: " + ex.Message);
 
             return new AdapterPresentation(ex.Message, true);
@@ -133,7 +133,7 @@ namespace RadiusAuthenticationAdapter
             string pin = proofData.Properties["pin"].ToString();
 
             // Construct RADIUS auth request.
-            var authPacket = radiusClient.Authenticate(this.userPrincipalName, pin);
+            var authPacket = radiusClient.Authenticate(this.identityClaim, pin);
             var receivedPacket = radiusClient.SendAndReceivePacket(authPacket).Result;
 
             // Handle no response from RADIUS server.
@@ -170,7 +170,7 @@ namespace RadiusAuthenticationAdapter
                 Logging.LogMessage(
                     "Processed authentication response." + Environment.NewLine +
                     "Packet Type: " + receivedPacket.PacketType.ToString() + Environment.NewLine +
-                    "User: " + this.userPrincipalName );
+                    "User: " + this.identityClaim );
             }
 
             return result;

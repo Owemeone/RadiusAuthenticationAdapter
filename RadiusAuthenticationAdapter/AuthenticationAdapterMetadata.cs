@@ -7,6 +7,7 @@ namespace RadiusAuthenticationAdapter
 {
     class AuthenticationAdapterMetadata : IAuthenticationAdapterMetadata
     {
+        private string identityClaims;
         /// <summary>
         /// The friendly name of the authentication provider.
         /// </summary>
@@ -83,7 +84,7 @@ namespace RadiusAuthenticationAdapter
         /// </summary>
         public string[] IdentityClaims
         {
-            get { return new string[] { "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn" }; }
+            get { return new string[] { this.identityClaims }; }
         }
 
 
@@ -102,9 +103,9 @@ namespace RadiusAuthenticationAdapter
         /// <summary>
         /// Constructor
         /// </summary>
-        public AuthenticationAdapterMetadata()
+        public AuthenticationAdapterMetadata(string identityClaims)
         {
-
+            this.identityClaims = identityClaims;
         }
     }
 }
