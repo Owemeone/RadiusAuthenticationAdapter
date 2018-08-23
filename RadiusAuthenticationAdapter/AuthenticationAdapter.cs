@@ -2,6 +2,7 @@
 using Microsoft.IdentityServer.Web.Authentication.External;
 using RadiusAuthenticationAdapter.Properties;
 using FP.Radius;
+using System.Text;
 
 namespace RadiusAuthenticationAdapter
 {
@@ -134,6 +135,7 @@ namespace RadiusAuthenticationAdapter
 
             // Construct RADIUS auth request.
             var authPacket = radiusClient.Authenticate(this.identityClaim, pin);
+            authPacket.SetAttribute(new RadiusAttribute(RadiusAttributeType.NAS_IP_ADDRESS, Encoding.UTF8.GetBytes(appConfig.NasAddress)));
             var receivedPacket = radiusClient.SendAndReceivePacket(authPacket).Result;
 
             // Handle no response from RADIUS server.

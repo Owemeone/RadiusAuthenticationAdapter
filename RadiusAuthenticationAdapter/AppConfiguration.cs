@@ -49,6 +49,13 @@ namespace RadiusAuthenticationAdapter
             set { _IdentityClaims = value; }
         }
 
+        internal string _NasAddress;
+        public string NasAddress
+        {
+            get { return _NasAddress; }
+            set { _NasAddress = value; }
+        }
+
         internal bool _Debug;
         public bool Debug
         {

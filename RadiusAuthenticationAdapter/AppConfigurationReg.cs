@@ -102,6 +102,17 @@ namespace RadiusAuthenticationAdapter
                         Logging.LogMessage("Configuration data invalid - Missing IdentityClaims");
                         throw new Exception("Configuration data not found.");
                     }
+
+                    var regNasAddress = appConfig.GetValue("NasAddress");
+                    if (regNasAddress != null)
+                    {
+                        _NasAddress = regNasAddress.ToString();
+                    }
+                    else
+                    {
+                        Logging.LogMessage("Configuration data invalid - Missing NasAddress");
+                        throw new Exception("Configuration data not found.");
+                    }
                 }
                 else
                 {
