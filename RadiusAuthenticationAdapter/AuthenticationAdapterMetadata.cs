@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.IdentityServer.Web.Authentication.External;
 using RadiusAuthenticationAdapter.Properties;
 
@@ -7,7 +6,6 @@ namespace RadiusAuthenticationAdapter
 {
     class AuthenticationAdapterMetadata : IAuthenticationAdapterMetadata
     {
-        private string identityClaims;
         /// <summary>
         /// The friendly name of the authentication provider.
         /// </summary>
@@ -40,7 +38,7 @@ namespace RadiusAuthenticationAdapter
         /// </summary>
         public int[] AvailableLcids
         {
-            get { return new int[] { 1033 }; }
+            get { return new int[] { 1033, 1043 }; }
         }
 
 
@@ -52,7 +50,8 @@ namespace RadiusAuthenticationAdapter
             get
             {
                 Dictionary<int, string> result = new Dictionary<int, string>();
-                result.Add(1033, "Implements RADIUS based MFA");
+                result.Add(1033, "Implements SafeNet RADIUS based MFA");
+                result.Add(1043, "Implementeerd SafeNet RADIUS gebaseerde MFA");
                 return result;
             }
         }
@@ -70,7 +69,8 @@ namespace RadiusAuthenticationAdapter
             get
             {
                 Dictionary<int, string> result = new Dictionary<int, string>();
-                result.Add(1033, "Use my VPN token");
+                result.Add(1033, "Use my SafeNet token");
+                result.Add(1043, "Gebruik mijn SafeNet token");
                 return result;
             }
         }
@@ -82,9 +82,13 @@ namespace RadiusAuthenticationAdapter
         /// methods in the IAuthenticationAdapter. Only the FIRST one you enter 
         /// here is presented to the adapter; so we will use UPN here.
         /// </summary>
+        /*public string[] IdentityClaims
+        {
+            get { Debugger.Launch(); AppConfigurationReg appConfig = new AppConfigurationReg(); return new[] { appConfig.IdentityClaims }; }
+        }*/
         public string[] IdentityClaims
         {
-            get { return new string[] { this.identityClaims }; }
+            get { return new[] { "http://schemas.microsoft.com/ws/2008/06/identity/claims/windowsaccountname" }; }
         }
 
 
@@ -97,15 +101,6 @@ namespace RadiusAuthenticationAdapter
         public bool RequiresIdentity
         {
             get { return true; }
-        }
-
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public AuthenticationAdapterMetadata(string identityClaims)
-        {
-            this.identityClaims = identityClaims;
         }
     }
 }

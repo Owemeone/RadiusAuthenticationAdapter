@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace RadiusAuthenticationAdapter
+﻿namespace RadiusAuthenticationAdapter
 {
     /// <summary>
     /// This class acts as a basis for configuration, from which derived classes can implement different configuration backends.

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Resources;
 using Microsoft.IdentityServer.Web.Authentication.External;
 using RadiusAuthenticationAdapter.Properties;
 
@@ -9,6 +10,8 @@ namespace RadiusAuthenticationAdapter
         private string message;
         private bool isPermanentFailure;
 
+        //static ResourceManager resMgr = new ResourceManager("RadiusAuthenticationAdapter.Properties.Resources", typeof(AdapterPresentation).Assembly);
+        static ResourceManager resMgr = Resources.ResourceManager;
         /// <summary>
         /// Used by AD FS to query to Authentication Adapter for the title of the authentication page.
         /// </summary>
@@ -16,7 +19,7 @@ namespace RadiusAuthenticationAdapter
         /// <returns></returns>
         public string GetPageTitle(int lcid)
         {
-            return Resources.Presentation_PageTitle;
+            return resMgr.GetString("Presentation_PageTitle", new System.Globalization.CultureInfo(lcid));
         }
 
 
@@ -35,7 +38,7 @@ namespace RadiusAuthenticationAdapter
             if (!this.isPermanentFailure)
             {
                 result += "<form method=\"post\" id=\"loginForm\" autocomplete=\"off\">";
-                result += Resources.Presentation_Prompt + ": <input id=\"pin\" name=\"pin\" type=\"password\" />";
+                result += resMgr.GetString("Presentation_Prompt", new System.Globalization.CultureInfo(lcid)) + ": <input id=\"pin\" name=\"pin\" type=\"password\" />";
                 result += "<input id=\"context\" type=\"hidden\" name=\"Context\" value=\"%Context%\"/>";
                 result += "<input id=\"authMethod\" type=\"hidden\" name=\"AuthMethod\" value=\"%AuthMethod%\"/>";
                 result += "<input id=\"continueButton\" type=\"submit\" name=\"Continue\" value=\"Continue\" />";
